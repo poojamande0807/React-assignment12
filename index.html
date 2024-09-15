@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Color Picker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .color-picker {
+      text-align: center;
+    }
+    input {
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      width: 200px;
+    }
+    .color-preview {
+      width: 150px;
+      height: 150px;
+      margin: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .error {
+      color: red;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    const { useState } = React;
+    function ColorPicker() {
+      const [color, setColor] = useState("#FFFFFF");
+      const [isValid, setIsValid] = useState(true);
+      const handleColorChange = (e) => {
+        const value = e.target.value;
+        setColor(value);
+        const isValidHex = /^#[0-9A-F]{6}$/i.test(value);
+        setIsValid(isValidHex || value === "");
+      };
+      return (
+        <div className="color-picker">
+          <input
+            type="text"
+            placeholder="Enter HEX color code"
+            value={color}
+            onChange={handleColorChange}
+            maxLength="7"
+          />
+          {!isValid && <p className="error">Invalid HEX color code</p>}
+          <div
+            className="color-preview"
+            style={{ backgroundColor: isValid ? color : "#FFFFFF" }}
+          ></div>
+        </div>
+      );
+    }
+    ReactDOM.render(<ColorPicker />, document.getElementById("root"));
+  </script>
+</body>
+</html>
